@@ -9,7 +9,6 @@ env:
 
 jobs:
   terraform:
-    if: github.repository != 'ORT-DevOps-2023S2G1/infrastructure-code'
     name: "Terraform Apply"
     runs-on: ubuntu-latest
     permissions:
