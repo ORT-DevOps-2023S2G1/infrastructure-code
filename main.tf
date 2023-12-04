@@ -1,13 +1,5 @@
 terraform {
 
-    cloud {
-        organization = "ORT-DevOps-2023S2G1"
-
-        workspaces {
-          name = "github-actions-terraform-aws"
-        }
-    }
-
     required_providers {
         aws = {
             source  = "hashicorp/aws"
