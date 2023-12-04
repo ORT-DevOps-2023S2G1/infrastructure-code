@@ -11,7 +11,7 @@ terraform {
         }
     }
 
-    required_version = ">= 1.2.0"
+    required_version = ">= 1.6.3"
 
     # Adding Backend as S3 for Remote State Storage with State Locking
     #backend "s3" {
