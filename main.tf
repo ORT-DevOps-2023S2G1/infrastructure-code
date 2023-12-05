@@ -27,6 +27,7 @@ terraform {
     #    key    = "dev2/terraform.tfstate"
     #    region = "us-east-1"  
 
+    
     # For State Locking
     #dynamodb_table = "terraform-dev-state-table"
     #}
