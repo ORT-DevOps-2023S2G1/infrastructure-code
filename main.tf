@@ -35,7 +35,6 @@ terraform {
 
 
 provider "aws" {
-    profile = "default" # AWS Credentials Profile configured on local desktop terminal  $HOME/.aws/credentials
     region  = "us-east-1"
 }
 
