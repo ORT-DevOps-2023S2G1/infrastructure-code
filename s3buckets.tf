@@ -1,4 +1,4 @@
-# Create S3 Bucket per workspace
+# Create S3 bucket per workspace 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 
 resource "aws_s3_bucket" "example" {
