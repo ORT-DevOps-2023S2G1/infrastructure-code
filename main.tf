@@ -4,7 +4,7 @@ terraform {
       organization = "ORT-DevOps-2023S2G1"
 
       workspaces {
-        name = "dev"
+        tags = ["dev", "stg", "prd"]
       }
     }
 

@@ -3,10 +3,10 @@
 
 resource "aws_s3_bucket" "example" {
   
-  bucket = "${terraform.workspace}-webapp-ort-devops-2023s2g1sss"
+  bucket = "${terraform.workspace}-webapp-ort-devops-2023s2g1new"
 
   tags = {
     Environment = "${terraform.workspace}"
-    bucketname  = "${terraform.workspace}-webapp-ort-devops-2023s2g1sss"
+    bucketname  = "${terraform.workspace}-webapp-ort-devops-2023s2g1new"
   }
 }
