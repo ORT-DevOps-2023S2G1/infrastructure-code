@@ -10,8 +10,8 @@ resource "aws_s3_bucket" "webapps3bucket" {
     prd = "prd-webapp-bucket"
   }
 
-  bucket = "${each.key}-${each.value}"
-  acl    = "private"
+  bucket = "${each.value}"
+
 
   tags = {
     Environment = each.key
