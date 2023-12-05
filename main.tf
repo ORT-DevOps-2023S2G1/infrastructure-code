@@ -1,13 +1,5 @@
 terraform {
 
-    # cloud {
-    #   organization = "ORT-DevOps-2023S2G1"
-
-    #   workspaces {
-    #     tags = ["dev", "stg", "prd"]
-    #   }
-    # }
-
     required_providers {
         aws = {
             source  = "hashicorp/aws"
