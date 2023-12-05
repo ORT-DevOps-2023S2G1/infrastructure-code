@@ -3,18 +3,10 @@
 
 resource "aws_s3_bucket" "webapps3bucket" {
 
-  # for_each Meta-Argument
-  for_each = {
-    dev  = "dev-webapp-bucket"
-    stg = "stg-webapp-bucket"
-    prd = "prd-webapp-bucket"
-  }
-
-  bucket = "${each.value}"
-
+  bucket = "${terraform.workspace}-webapp-bucket"
 
   tags = {
-    Environment = each.key
-    bucketname  = "${each.value}"
+    Environment = "${terraform.workspace}"
+    bucketname  = "${terraform.workspace}-webapp-bucket"
   }
 }
