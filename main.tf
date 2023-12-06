@@ -29,9 +29,6 @@ terraform {
 
 provider "aws" {
     region  = "us-east-1"
-    access_key = "${terraform.AWS_ACCESS_KEY_ID_GONZA}"
-    secret_key = "${terraform.AWS_SECRET_ACCESS_KEY_GONZA}"
-    token = "${terraform.AWS_SESSION_TOKEN_GONZA}"
 }
 
 
