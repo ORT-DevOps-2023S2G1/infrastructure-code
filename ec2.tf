@@ -1,7 +1,7 @@
 resource "aws_launch_template" "ecs_lt" {
     name_prefix   = "ecs-template"
     image_id      = "ami-0230bd60aa48260c6"
-    instance_type = "t2.small"
+    instance_type = var.instance_type
 
     key_name               = "ecs-proyecto"
     vpc_security_group_ids = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
