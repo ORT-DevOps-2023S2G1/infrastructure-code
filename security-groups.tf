@@ -2,6 +2,8 @@
 resource "aws_security_group" "vpc-ssh" {
     name        = "vpc-ssh-sg"
     description = "Security Group - SSH Traffic"
+    vpc_id = aws_vpc.main.id
+
     ingress {
         description = "Allow Port 22"
         from_port   = 22
@@ -22,6 +24,8 @@ resource "aws_security_group" "vpc-ssh" {
     resource "aws_security_group" "vpc-web" {
     name        = "vpc-web-sg"
     description = "Security Group - Web Traffic"
+    vpc_id = aws_vpc.main.id
+    
     ingress {
         description = "Allow Port 80"
         from_port   = 80
