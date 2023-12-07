@@ -10,21 +10,21 @@ resource "aws_subnet" "subnet_dev" {
     vpc_id                  = aws_vpc.main.id
     cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 3)
     map_public_ip_on_launch = true
-    availability_zone       = var.region
+    availability_zone       = "us-east-1a"
 }
 
 resource "aws_subnet" "subnet_stg" {
     vpc_id                  = aws_vpc.main.id
     cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
     map_public_ip_on_launch = true
-    availability_zone       = var.region
+    availability_zone       = "us-east-1a"
 }
 
 resource "aws_subnet" "subnet_prd" {
     vpc_id                  = aws_vpc.main.id
     cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 1)
     map_public_ip_on_launch = true
-    availability_zone       = var.region
+    availability_zone       = "us-east-1a"
 }
 
 resource "aws_internet_gateway" "internet_gateway" {

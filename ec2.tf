@@ -6,7 +6,7 @@ resource "aws_launch_template" "ecs_lt" {
     key_name               = "ecs-proyecto"
     vpc_security_group_ids = [aws_security_group.vpc-ssh.id]
     iam_instance_profile {
-        name = "LabRole"
+        name = "Labrole"
 }
 
 block_device_mappings {
