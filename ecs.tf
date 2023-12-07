@@ -64,7 +64,7 @@ resource "aws_ecs_service" "ecs_service" {
 
     network_configuration {
         subnets         = [aws_subnet.subnet_dev.id]
-        security_groups = [aws_security_group.vpc-ssh, aws_security_group.vpc-web]
+        security_groups = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
     }
 
     force_new_deployment = true
