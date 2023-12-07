@@ -42,17 +42,17 @@ resource "aws_route_table" "route_table" {
     }
 }
 
-resource "aws_route_table_association" "subnet_route" {
+resource "aws_route_table_association" "subnet_dev_route" {
     subnet_id      = aws_subnet.subnet_dev.id
     route_table_id = aws_route_table.route_table.id
 }
 
-resource "aws_route_table_association" "subnet2_route" {
+resource "aws_route_table_association" "subnet_stg_route" {
     subnet_id      = aws_subnet.subnet_stg.id
     route_table_id = aws_route_table.route_table.id
 }
 
-resource "aws_route_table_association" "subnet2_route" {
+resource "aws_route_table_association" "subnet_prd_route" {
     subnet_id      = aws_subnet.subnet_prd.id
     route_table_id = aws_route_table.route_table.id
 }
