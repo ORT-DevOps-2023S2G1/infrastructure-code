@@ -4,7 +4,7 @@ resource "aws_launch_template" "ecs_lt" {
     instance_type = "t2.small"
 
     key_name               = "ecs-proyecto"
-    vpc_security_group_ids = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web]
+    vpc_security_group_ids = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
     iam_instance_profile {
         name = "LabRole"
 }
