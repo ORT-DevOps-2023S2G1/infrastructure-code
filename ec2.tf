@@ -5,26 +5,27 @@ resource "aws_launch_template" "ecs_lt" {
 
     key_name               = "ecs-proyecto"
     vpc_security_group_ids = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
+    
     iam_instance_profile {
-        name = "AWSServiceRoleForECS"
-}
-
-block_device_mappings {
-    device_name = "/dev/xvda"
-    ebs {
-        volume_size = 30
-        volume_type = "gp2"
+        name = "EMR_EC2_DefaultRole"
     }
-}
 
-tag_specifications {
-    resource_type = "instance"
-    tags = {
-        Name = "ecs-instance"
+    block_device_mappings {
+        device_name = "/dev/xvda"
+        ebs {
+            volume_size = 30
+            volume_type = "gp2"
+        }
     }
-}
 
-user_data = filebase64("${path.module}/ecs.sh")
+    tag_specifications {
+        resource_type = "instance"
+        tags = {
+            Name = "ecs-instance"
+        }
+    }
+
+    user_data = filebase64("${path.module}/ecs.sh")
 
 }
 
