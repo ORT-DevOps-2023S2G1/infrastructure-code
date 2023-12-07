@@ -32,7 +32,7 @@ resource "aws_ecs_cluster_capacity_providers" "example" {
 resource "aws_ecs_task_definition" "ecs_task_definition" {
     family             = "ecs-task"
     network_mode       = "awsvpc"
-    execution_role_arn = "arn:aws:iam::532199187081:role/ecsTaskExecutionRole"
+    execution_role_arn = "arn:aws:iam::637483454218:role/LabRole"
     cpu                = 256
     runtime_platform {
         operating_system_family = "LINUX"
@@ -63,7 +63,7 @@ resource "aws_ecs_service" "ecs_service" {
     desired_count   = 2
 
     network_configuration {
-        subnets         = [aws_subnet.subnet_dev.id]
+        subnets         = [aws_subnet.subnet_1.id, aws_subnet.subnet_2.id]
         security_groups = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
     }
 

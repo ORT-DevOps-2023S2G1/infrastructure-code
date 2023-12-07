@@ -4,9 +4,9 @@ resource "aws_launch_template" "ecs_lt" {
     instance_type = "t2.small"
 
     key_name               = "ecs-proyecto"
-    vpc_security_group_ids = [aws_security_group.vpc-ssh.id]
+    vpc_security_group_ids = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web]
     iam_instance_profile {
-        name = "Labrole"
+        name = "LabRole"
 }
 
 block_device_mappings {
@@ -30,7 +30,7 @@ user_data = filebase64("${path.module}/ecs.sh")
 
 # Evaluar si solo se utiliza en PRD
 resource "aws_autoscaling_group" "ecs_asg" {
-    vpc_zone_identifier = [aws_subnet.subnet_dev.id]
+    vpc_zone_identifier = [aws_subnet.subnet_1.id, aws_subnet.subnet_2.id]
     desired_capacity    = 2
     max_size            = 3
     min_size            = 1
@@ -53,7 +53,7 @@ resource "aws_lb" "ecs_alb" {
     internal           = false
     load_balancer_type = "application"
     security_groups    = [aws_security_group.vpc-ssh.id]
-    subnets            = [aws_subnet.subnet_dev.id]
+    subnets            = [aws_subnet.subnet_1.id, aws_subnet.subnet_2.id]
 
     tags = {
         

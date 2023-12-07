@@ -6,26 +6,20 @@ resource "aws_vpc" "main" {
     }
 }
 
-resource "aws_subnet" "subnet_dev" {
-    vpc_id                  = aws_vpc.main.id
-    cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 3)
-    map_public_ip_on_launch = true
-    availability_zone       = "us-east-1a"
-}
-
-resource "aws_subnet" "subnet_stg" {
-    vpc_id                  = aws_vpc.main.id
-    cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
-    map_public_ip_on_launch = true
-    availability_zone       = "us-east-1a"
-}
-
-resource "aws_subnet" "subnet_prd" {
+resource "aws_subnet" "subnet_1" {
     vpc_id                  = aws_vpc.main.id
     cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 1)
     map_public_ip_on_launch = true
     availability_zone       = "us-east-1a"
 }
+
+resource "aws_subnet" "subnet_2" {
+    vpc_id                  = aws_vpc.main.id
+    cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
+    map_public_ip_on_launch = true
+    availability_zone       = "us-east-1b"
+}
+
 
 resource "aws_internet_gateway" "internet_gateway" {
     vpc_id = aws_vpc.main.id
@@ -42,17 +36,12 @@ resource "aws_route_table" "route_table" {
     }
 }
 
-resource "aws_route_table_association" "subnet_dev_route" {
-    subnet_id      = aws_subnet.subnet_dev.id
+resource "aws_route_table_association" "subnet_1_route" {
+    subnet_id      = aws_subnet.subnet_1.id
     route_table_id = aws_route_table.route_table.id
 }
 
-resource "aws_route_table_association" "subnet_stg_route" {
-    subnet_id      = aws_subnet.subnet_stg.id
-    route_table_id = aws_route_table.route_table.id
-}
-
-resource "aws_route_table_association" "subnet_prd_route" {
-    subnet_id      = aws_subnet.subnet_prd.id
+resource "aws_route_table_association" "subnet_2_route" {
+    subnet_id      = aws_subnet.subnet_2.id
     route_table_id = aws_route_table.route_table.id
 }
