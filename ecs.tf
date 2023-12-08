@@ -17,15 +17,15 @@ resource "aws_ecs_capacity_provider" "capacity_provider" {
     }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "cluster_cap_prov" {
-    cluster_name = "ecs-cluster-${local.infra_env}"
+resource "aws_ecs_cluster_capacity_providers" "cluster_capacity_provider" {
+    cluster_name = aws_ecs_cluster.ecs_cluster.name
 
-    capacity_providers = ["cap-provider-${local.infra_env}"]
+    capacity_providers = [aws_ecs_capacity_provider.ecs_capacity_provider.name]
 
     default_capacity_provider_strategy {
         base              = 1
         weight            = 100
-        capacity_provider = "cap-provider-${local.infra_env}"
+        capacity_provider = aws_ecs_capacity_provider.ecs_capacity_provider.name
     }
 }
 
