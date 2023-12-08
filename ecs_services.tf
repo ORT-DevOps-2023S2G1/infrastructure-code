@@ -1,4 +1,4 @@
-resource "aws_ecs_service" "ecs_service" {
+resource "aws_ecs_service" "ecs_service-orders" {
     name            = "ecs-service-orders"
     cluster         = aws_ecs_cluster.ecs_cluster.id
     task_definition = aws_ecs_task_definition.orders_task_definition.arn
@@ -32,7 +32,7 @@ resource "aws_ecs_service" "ecs_service" {
     depends_on = [aws_autoscaling_group.ecs_asg]
 }
 
-resource "aws_ecs_service" "ecs_service" {
+resource "aws_ecs_service" "ecs_service-payments" {
     name            = "ecs-service-payments"
     cluster         = aws_ecs_cluster.ecs_cluster.id
     task_definition = aws_ecs_task_definition.payments_task_definition.arn
@@ -66,7 +66,7 @@ resource "aws_ecs_service" "ecs_service" {
     depends_on = [aws_autoscaling_group.ecs_asg]
 }
 
-resource "aws_ecs_service" "ecs_service" {
+resource "aws_ecs_service" "ecs_service-products" {
     name            = "ecs-service-products"
     cluster         = aws_ecs_cluster.ecs_cluster.id
     task_definition = aws_ecs_task_definition.products_task_definition.arn
@@ -100,7 +100,7 @@ resource "aws_ecs_service" "ecs_service" {
     depends_on = [aws_autoscaling_group.ecs_asg]
 }
 
-resource "aws_ecs_service" "ecs_service" {
+resource "aws_ecs_service" "ecs_service-shipments" {
     name            = "ecs-service-shipments"
     cluster         = aws_ecs_cluster.ecs_cluster.id
     task_definition = aws_ecs_task_definition.shipments_task_definition.arn
