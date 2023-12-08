@@ -40,8 +40,8 @@ resource "aws_ecs_task_definition" "orders_task_definition" {
     }
     container_definitions = jsonencode([
     {
-        name      = "orders"
-        image     = "ghcr.io/ort-devops-2023s2g1/orders-service-example:7090894486"
+        name      = "products"
+        image     = "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-products-service:7142072702"
         cpu       = 256
         memory    = 512
         essential = true
@@ -83,7 +83,7 @@ resource "aws_ecs_service" "ecs_service" {
 
     load_balancer {
         target_group_arn = aws_lb_target_group.ecs_tg.arn
-        container_name   = "orders"
+        container_name   = "products"
         container_port   = 80
     }
 
