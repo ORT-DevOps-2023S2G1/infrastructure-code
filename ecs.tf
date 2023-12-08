@@ -1,6 +1,5 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
     name = "ecs-cluster-${terraform.workspace}"
-    count = var.create ? 1 : 0
 
     tags = {
         "Name" = "Cluester ec2 hecho con terraform"
