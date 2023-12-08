@@ -1,5 +1,10 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
     name = "ecs-cluster-${local.infra_env}"
+
+    setting {
+        name  = "containerInsights"
+        value = "enabled"
+    }
 }
 
 resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
@@ -60,7 +65,7 @@ resource "aws_ecs_service" "ecs_service" {
     name            = "ecs-service-products-${local.infra_env}"
     cluster         = aws_ecs_cluster.ecs_cluster.id
     task_definition = aws_ecs_task_definition.products_task_definition.arn
-    desired_count   = 2
+    desired_count   = 1
 
     network_configuration {
         subnets         = [aws_subnet.subnet_1.id, aws_subnet.subnet_2.id]

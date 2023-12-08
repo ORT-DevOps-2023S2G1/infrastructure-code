@@ -25,7 +25,7 @@ resource "aws_launch_template" "ecs_lt" {
         }
     }
 
-    user_data = filebase64("${path.module}/ecs.sh")
+    #user_data = filebase64("${path.module}/ecs.sh")
 
 }
 
@@ -50,7 +50,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
 
 # con esta definicion solo funciona en un ambiente por las subnets definidas
 resource "aws_lb" "ecs_alb" {
-    name               = "ecs-alb"
+    name               = "ecs-alb-${local.infra_env}"
     internal           = false
     load_balancer_type = "application"
     security_groups    = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
