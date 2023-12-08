@@ -4,6 +4,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
     tags = {
         "Name" = "Cluester ec2 hecho con terraform"
     }
+    
 }
 
 resource "aws_ecs_capacity_provider" "capacity_provider" {
