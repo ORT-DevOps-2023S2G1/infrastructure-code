@@ -1,7 +1,7 @@
 resource "aws_ecs_task_definition" "orders_task_definition" {
     family             = "ecs-task"
     network_mode       = "awsvpc"
-    execution_role_arn = "arn:aws:iam::637483454218:role/LabRole"
+    execution_role_arn = var.ecs_task_execution_role_arn
     cpu                = 2
     runtime_platform {
         operating_system_family = "LINUX"
@@ -33,7 +33,7 @@ resource "aws_ecs_task_definition" "orders_task_definition" {
 resource "aws_ecs_task_definition" "payments_task_definition" {
     family             = "ecs-task"
     network_mode       = "awsvpc"
-    execution_role_arn = "arn:aws:iam::637483454218:role/LabRole"
+    execution_role_arn = var.ecs_task_execution_role_arn
     cpu                = 2
     runtime_platform {
         operating_system_family = "LINUX"
@@ -65,7 +65,7 @@ resource "aws_ecs_task_definition" "payments_task_definition" {
 resource "aws_ecs_task_definition" "products_task_definition" {
     family             = "ecs-task"
     network_mode       = "awsvpc"
-    execution_role_arn = "arn:aws:iam::637483454218:role/LabRole"
+    execution_role_arn = var.ecs_task_execution_role_arn
     cpu                = 2
     runtime_platform {
         operating_system_family = "LINUX"
@@ -97,7 +97,7 @@ resource "aws_ecs_task_definition" "products_task_definition" {
 resource "aws_ecs_task_definition" "shipments_task_definition" {
     family             = "ecs-task"
     network_mode       = "awsvpc"
-    execution_role_arn = "arn:aws:iam::637483454218:role/LabRole"
+    execution_role_arn = var.ecs_task_execution_role_arn
     cpu                = 2
     runtime_platform {
         operating_system_family = "LINUX"

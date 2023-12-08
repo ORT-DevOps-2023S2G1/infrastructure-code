@@ -26,6 +26,10 @@ variable "create" {
   default     = true
 }
 
+variable "ecs_task_execution_role_arn" {
+  type = string
+}
+
 variable "microservices" {
     type    = set(string)
     default = ["orders", "payments", "products", "shipments"]
