@@ -1,14 +1,15 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-    name = "ecs-cluster-${terraform.workspace}"
+    name = "ecs-cluster-dev-gonza"
 
     tags = {
         "Name" = "Cluester ec2 hecho con terraform"
     }
     
+    
 }
 
 resource "aws_ecs_capacity_provider" "capacity_provider" {
-    name = "nombre-capacity-provider-${terraform.workspace}"
+    name = "nombre-capacity-provider-dev-gonza"
 
     auto_scaling_group_provider {
     auto_scaling_group_arn = aws_autoscaling_group.ecs_asg.arn
