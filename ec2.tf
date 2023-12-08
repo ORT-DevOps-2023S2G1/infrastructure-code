@@ -26,6 +26,7 @@ resource "aws_launch_template" "ecs_lt" {
     }
 
     #user_data = filebase64("${path.module}/ecs.sh")
+    #modified
 
 }
 
