@@ -1,9 +1,9 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-    name = "ecs-cluster"
+    name = "ecs-cluster-${local.infra_env}"
 }
 
 resource "aws_ecs_capacity_provider" "capacity_provider" {
-    name = "nombre-capacity-provider"
+    name = "cap-provider-${local.infra_env}"
 
     auto_scaling_group_provider {
     auto_scaling_group_arn = aws_autoscaling_group.ecs_asg.arn
@@ -17,15 +17,15 @@ resource "aws_ecs_capacity_provider" "capacity_provider" {
     }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "example" {
-    cluster_name = aws_ecs_cluster.ecs_cluster.name
+resource "aws_ecs_cluster_capacity_providers" "cluster_cap_prov" {
+    cluster_name = "ecs-cluster-${local.infra_env}"
 
-    capacity_providers = [aws_ecs_capacity_provider.capacity_provider.name]
+    capacity_providers = ["cap-provider-${local.infra_env}"]
 
     default_capacity_provider_strategy {
         base              = 1
         weight            = 100
-        capacity_provider = aws_ecs_capacity_provider.capacity_provider.name
+        capacity_provider = "cap-provider-${local.infra_env}"
     }
 }
 
@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "orders_task_definition" {
 }
 
 resource "aws_ecs_service" "ecs_service" {
-    name            = "ecs-service"
+    name            = "ecs-service-${local.infra_env}"
     cluster         = aws_ecs_cluster.ecs_cluster.id
     task_definition = aws_ecs_task_definition.orders_task_definition.arn
     desired_count   = 2
