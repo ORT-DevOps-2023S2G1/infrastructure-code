@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "payments_task_definition" {
     }
     container_definitions = jsonencode([
     {
-        name      = "orders"
+        name      = "payments"
         image     = "ghcr.io/ort-devops-2023s2g1/payments-service-example:7107677406"
         cpu       = 256
         memory    = 256
@@ -73,7 +73,7 @@ resource "aws_ecs_task_definition" "products_task_definition" {
     }
     container_definitions = jsonencode([
     {
-        name      = "orders"
+        name      = "products"
         image     = "ghcr.io/ort-devops-2023s2g1/products-service-example:7080022031"
         cpu       = 256
         memory    = 256
@@ -105,7 +105,7 @@ resource "aws_ecs_task_definition" "shipments_task_definition" {
     }
     container_definitions = jsonencode([
     {
-        name      = "orders"
+        name      = "shipments"
         image     = "ghcr.io/ort-devops-2023s2g1/shipping-service-example:7080018234"
         cpu       = 256
         memory    = 256

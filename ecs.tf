@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 }
 
 resource "aws_ecs_capacity_provider" "capacity_provider" {
-    name = "nombre-capacity-provider"
+    name = "nombre-capacity-provider-${terraform.workspace}"
 
     auto_scaling_group_provider {
     auto_scaling_group_arn = aws_autoscaling_group.ecs_asg.arn
