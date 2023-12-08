@@ -28,6 +28,7 @@ variable "create" {
 
 variable "ecs_task_execution_role_arn" {
   type = string
+  default = "arn:aws:iam::959060567456:role/LabRole"
 }
 
 variable "microservices" {
