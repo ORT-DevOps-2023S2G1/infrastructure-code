@@ -59,7 +59,7 @@ resource "aws_ecs_service" "ecs_service" {
 
     load_balancer {
         target_group_arn = aws_lb_target_group.ecs_tg.arn
-        container_name   = "orders"
+        container_name   = "payments"
         container_port   = 80
     }
 
@@ -93,7 +93,7 @@ resource "aws_ecs_service" "ecs_service" {
 
     load_balancer {
         target_group_arn = aws_lb_target_group.ecs_tg.arn
-        container_name   = "orders"
+        container_name   = "products"
         container_port   = 80
     }
 
@@ -101,7 +101,7 @@ resource "aws_ecs_service" "ecs_service" {
 }
 
 resource "aws_ecs_service" "ecs_service" {
-    name            = "ecs-service-shiptments"
+    name            = "ecs-service-shipments"
     cluster         = aws_ecs_cluster.ecs_cluster.id
     task_definition = aws_ecs_task_definition.shipments_task_definition.arn
     desired_count   = 2
@@ -127,7 +127,7 @@ resource "aws_ecs_service" "ecs_service" {
 
     load_balancer {
         target_group_arn = aws_lb_target_group.ecs_tg.arn
-        container_name   = "orders"
+        container_name   = "shipments"
         container_port   = 80
     }
 
