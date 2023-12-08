@@ -29,7 +29,7 @@ resource "aws_ecs_cluster_capacity_providers" "cluster_capacity_provider" {
     }
 }
 
-resource "aws_ecs_task_definition" "orders_task_definition" {
+resource "aws_ecs_task_definition" "products_task_definition" {
     family             = "ecs-task"
     network_mode       = "awsvpc"
     execution_role_arn = "arn:aws:iam::637483454218:role/LabRole"
@@ -57,9 +57,9 @@ resource "aws_ecs_task_definition" "orders_task_definition" {
 }
 
 resource "aws_ecs_service" "ecs_service" {
-    name            = "ecs-service-${local.infra_env}"
+    name            = "ecs-service-products-${local.infra_env}"
     cluster         = aws_ecs_cluster.ecs_cluster.id
-    task_definition = aws_ecs_task_definition.orders_task_definition.arn
+    task_definition = aws_ecs_task_definition.products_task_definition.arn
     desired_count   = 2
 
     network_configuration {
