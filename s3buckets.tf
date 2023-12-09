@@ -3,10 +3,10 @@
 
 resource "aws_s3_bucket" "webapps3" {
   
-  bucket = "${local.infra_env}-webapp-ort-devops-2023s2g1-1146"
+  bucket = "${local.env}-webapp-${local.name}"
 
   tags = {
-    Environment = "${local.infra_env}"
-    bucketname  = "${local.infra_env}-webapp-ort-devops-2023s2g1-1146"
+    Environment = "${local.env}"
+    bucketname  = "${local.env}-webapp-${local.name}"
   }
 }

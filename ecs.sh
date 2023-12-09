@@ -1,1 +1,0 @@
-echo ECS_CLUSTER=ecs-cluster-dev >> /etc/ecs/ecs.config

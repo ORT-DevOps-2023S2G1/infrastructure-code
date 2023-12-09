@@ -1,5 +1,5 @@
-resource "aws_ecs_cluster" "ecs_cluster" {
-    name = "ecs-cluster-${local.infra_env}"
+resource "aws_ecs_cluster" "main" {
+    name = "${local.name}-cluster-${local.env}"
 
     setting {
         name  = "containerInsights"
@@ -7,91 +7,114 @@ resource "aws_ecs_cluster" "ecs_cluster" {
     }
 }
 
-# resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
-#     name = "${local.infra_env}-ecs-capacity-provider"
-
-#     auto_scaling_group_provider {
-#     auto_scaling_group_arn = aws_autoscaling_group.ecs_asg.arn
-
-#     managed_scaling {
-#         maximum_scaling_step_size = 1000
-#         minimum_scaling_step_size = 1
-#         status                    = "ENABLED"
-#         target_capacity           = 3
-#     }
-#     }
-# }
-
-# resource "aws_ecs_cluster_capacity_providers" "cluster_capacity_provider" {
-#     cluster_name = aws_ecs_cluster.ecs_cluster.name
-
-#     capacity_providers = [aws_ecs_capacity_provider.ecs_capacity_provider.name]
-
-#     default_capacity_provider_strategy {
-#         base              = 1
-#         weight            = 100
-#         capacity_provider = aws_ecs_capacity_provider.ecs_capacity_provider.name
-#     }
-# }
-
-resource "aws_ecs_task_definition" "products_task_definition" {
-    family             = "ecs-task"
-    network_mode       = "awsvpc"
-    execution_role_arn = "arn:aws:iam::637483454218:role/LabRole"
-    cpu                = 256
-    runtime_platform {
-        operating_system_family = "LINUX"
-        cpu_architecture        = "X86_64"
-    }
-
+resource "aws_ecs_task_definition" "main" {
+    family = "product-service"
+    network_mode             = "awsvpc"
+    requires_compatibilities = ["FARGATE"]
+    cpu                      = 256
+    memory                   = 512
+    execution_role_arn       = local.exec-role-arn
+    task_role_arn            = local.exec-role-arn
     container_definitions = jsonencode([
-    {
-        name      = "products"
-        image     = "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-products-service:7142072702"
-        cpu       = 256
-        memory    = 512
-        essential = true
-        portMappings = [
         {
-            containerPort = 80
-            hostPort      = 80
-            protocol      = "tcp"
+            name        = "products"
+            image       = "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-products-service:7142072702"
+            essential   = true
+            portMappings = [{
+                protocol      = "tcp"
+                containerPort = 8080
+                hostPort      = 8080
+            }]
+            logConfiguration = {
+                logDriver = "awslogs"
+                options   = {
+                    awslogs-create-group  = "true"
+                    awslogs-group         = "/ecs/product-service"
+                    awslogs-region        = "us-east-1"
+                    awslogs-stream-prefix = "ecs"
+                }
+            }
+        }])
+        runtime_platform {
+            cpu_architecture = "X86_64"
+            operating_system_family = "LINUX"
         }
-        ]
-    }
-    ])
 }
 
-resource "aws_ecs_service" "ecs_service" {
-    name            = "ecs-service-products-${local.infra_env}"
-    cluster         = aws_ecs_cluster.ecs_cluster.id
-    task_definition = aws_ecs_task_definition.products_task_definition.arn
-    desired_count   = 1
-
+resource "aws_ecs_service" "main" {
+    name                               = "${local.name}-service-${local.env}"
+    cluster                            = aws_ecs_cluster.main.id
+    task_definition                    = aws_ecs_task_definition.main.arn
+    desired_count                      = 2
+    deployment_minimum_healthy_percent = 50
+    deployment_maximum_percent         = 200
+    launch_type                        = "FARGATE"
+    scheduling_strategy                = "REPLICA"
+    
     network_configuration {
-        subnets         = [aws_subnet.subnet_1.id, aws_subnet.subnet_2.id]
-        security_groups = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
+        subnets         = [aws_subnet.subnet.id, aws_subnet.subnet2.id]
+        security_groups = [aws_security_group.tasks_sg.id]
+        assign_public_ip = true
     }
-
-    # force_new_deployment = true
-    #     placement_constraints {
-    #         type = "distinctInstance"
-    # }
-
-    # triggers = {
-    #     redeployment = timestamp()
-    # }
-
-    # capacity_provider_strategy {
-    #     capacity_provider = aws_ecs_capacity_provider.ecs_capacity_provider.name
-    #     weight            = 100
-    # }
-
+    
     load_balancer {
-        target_group_arn = aws_lb_target_group.ecs_tg.arn
+        target_group_arn = aws_alb_target_group.main.arn
         container_name   = "products"
-        container_port   = 80
+        container_port   = 8080
+    }
+    
+    # lifecycle {
+    #     ignore_changes = [task_definition, desired_count]
+    # }
+}
+
+resource "aws_lb" "main" {
+    name               = "${local.name}-alb-${local.env}"
+    internal           = false
+    load_balancer_type = "application"
+    security_groups    = [aws_security_group.alb.id]
+    subnets            = [aws_subnet.subnet.id, aws_subnet.subnet2.id]
+    
+    enable_deletion_protection = false
     }
 
-    # depends_on = [aws_autoscaling_group.ecs_asg]
+resource "aws_alb_target_group" "main" {
+    name        = "${local.name}-tg-${local.env}"
+    port        = 80
+    protocol    = "HTTP"
+    vpc_id      = aws_vpc.main.id
+    target_type = "ip"
+    
+    health_check {
+        healthy_threshold   = "3"
+        interval            = "30"
+        protocol            = "HTTP"
+        matcher             = "200"
+        timeout             = "3"
+        path                = "/"
+        unhealthy_threshold = "2"
+    }
+}
+
+resource "aws_alb_listener" "http" {
+    load_balancer_arn = aws_lb.main.arn
+    port              = 80
+    protocol          = "HTTP"
+    
+    default_action {
+        target_group_arn = aws_alb_target_group.main.id
+        type             = "forward"
+    }
+}
+
+resource "aws_appautoscaling_target" "ecs_target" {
+    max_capacity       = 4
+    min_capacity       = 1
+    resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
+    scalable_dimension = "ecs:service:DesiredCount"
+    service_namespace  = "ecs"
+}
+
+resource "aws_cloudwatch_log_group" "fargate-logs" {
+    name = "fargate-logs"
 }

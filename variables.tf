@@ -1,5 +1,7 @@
 locals {
-    infra_env = terraform.workspace
+    env = terraform.workspace
+    name = "proy-ort"
+    exec-role-arn = "arn:aws:iam::637483454218:role/LabRole"
 }
 
 variable "region" {
@@ -9,7 +11,7 @@ variable "region" {
 }
 
 variable "instance_type" {
-    default = "t2.micro"
+    default = "t2.small"
     description = "EC2 Instance Type"
     type = string
 }
@@ -18,4 +20,10 @@ variable "vpc_cidr" {
     default = "10.0.0.0/16"
     description = "Main VPC CIDR"
     type = string
+}
+
+variable "cloudwatch_group" {
+    description = "CloudWatch group name."
+    type = string
+    default = "services-group"
 }
