@@ -29,7 +29,7 @@ variable "vpc_cidr" {
 variable "cloudwatch_group" {
     description = "CloudWatch group name."
     type = string
-    default = "services-group"
+    default = "services-group-${local.env}"
 }
 
 variable "public_subnet_count" {
