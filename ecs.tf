@@ -183,5 +183,5 @@ resource "aws_appautoscaling_target" "ecs_target" {
 }
 
 resource "aws_cloudwatch_log_group" "fargate-logs" {
-    name = var.cloudwatch_group
+    name = "${var.cloudwatch_group}-${local.env}"
 }

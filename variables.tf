@@ -16,12 +16,6 @@ variable "instance_type" {
     type = string
 }
 
-# variable "vpc_cidr" {
-#     default = "10.0.0.0/16"
-#     description = "Main VPC CIDR"
-#     type = string
-# }
-
 variable "vpc_cidr" {
     type = string
 }
@@ -29,7 +23,7 @@ variable "vpc_cidr" {
 variable "cloudwatch_group" {
     description = "CloudWatch group name."
     type = string
-    default = "services-group-${local.env}"
+    default = "services-group"
 }
 
 variable "public_subnet_count" {
