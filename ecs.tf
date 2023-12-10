@@ -8,14 +8,16 @@ resource "aws_ecs_cluster" "main" {
 }
 
 resource "aws_ecs_task_definition" "main" {
-    family = "product-service"
+    for_each = var.services
+    
+    family = "${each.key}-service"
     network_mode             = "awsvpc"
     requires_compatibilities = ["FARGATE"]
     cpu                      = 256
     memory                   = 512
     execution_role_arn       = local.exec-role-arn
     task_role_arn            = local.exec-role-arn
-    container_definitions = file("task-definitions/products-service.json")
+    container_definitions = file("task-definitions/${each.key}-service.json")
     
     runtime_platform {
         cpu_architecture = "X86_64"
@@ -24,9 +26,11 @@ resource "aws_ecs_task_definition" "main" {
 }
 
 resource "aws_ecs_service" "main" {
-    name                               = "${local.name}-service-${local.env}"
+    for_each = var.services
+
+    name                               = "${each.key}-service-${local.env}"
     cluster                            = aws_ecs_cluster.main.id
-    task_definition                    = aws_ecs_task_definition.main.arn
+    task_definition                    = "${each.key}-service"
     desired_count                      = 2
     deployment_minimum_healthy_percent = 50
     deployment_maximum_percent         = 200
@@ -41,7 +45,7 @@ resource "aws_ecs_service" "main" {
     
     load_balancer {
         target_group_arn = aws_alb_target_group.main.arn
-        container_name   = "products"
+        container_name   = "${each.key}"
         container_port   = 8080
     }
     
@@ -90,13 +94,19 @@ resource "aws_alb_listener" "http" {
 }
 
 resource "aws_appautoscaling_target" "ecs_target" {
+    for_each = var.services
+
     max_capacity       = 4
     min_capacity       = 1
-    resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
+    resource_id        = "service/${aws_ecs_cluster.main.name}/${each.key}-service-${local.env}"
     scalable_dimension = "ecs:service:DesiredCount"
     service_namespace  = "ecs"
+
+    depends_on = [
+        aws_ecs_service.main
+    ]
 }
 
 resource "aws_cloudwatch_log_group" "fargate-logs" {
-    name = "fargate-logs"
+    name = var.cloudwatch_group
 }
