@@ -22,6 +22,10 @@ variable "instance_type" {
 #     type = string
 # }
 
+variable "vpc_cidr" {
+    type = string
+}
+
 variable "cloudwatch_group" {
     description = "CloudWatch group name."
     type = string
