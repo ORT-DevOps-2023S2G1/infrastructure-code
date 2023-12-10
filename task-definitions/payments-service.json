@@ -1,0 +1,23 @@
+[
+    {
+        "name" : "payments",
+        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-payments-service:7142069992",
+        "essential" : true,
+        "portMappings" : [
+            {
+                "protocol" : "tcp",
+                "containerPort" : 8080,
+                "hostPort" : 8080
+            }
+        ],
+        "logConfiguration" : {
+            "logDriver" : "awslogs",
+            "options" : {
+                "awslogs-create-group" : "true",
+                "awslogs-group" : "/ecs/product-service",
+                "awslogs-region" : "us-east-1",
+                "awslogs-stream-prefix" : "ecs"
+            }
+        }
+    }
+]

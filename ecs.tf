@@ -15,30 +15,12 @@ resource "aws_ecs_task_definition" "main" {
     memory                   = 512
     execution_role_arn       = local.exec-role-arn
     task_role_arn            = local.exec-role-arn
-    container_definitions = jsonencode([
-        {
-            name        = "products"
-            image       = "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-products-service:7142072702"
-            essential   = true
-            portMappings = [{
-                protocol      = "tcp"
-                containerPort = 8080
-                hostPort      = 8080
-            }]
-            logConfiguration = {
-                logDriver = "awslogs"
-                options   = {
-                    awslogs-create-group  = "true"
-                    awslogs-group         = "/ecs/product-service"
-                    awslogs-region        = "us-east-1"
-                    awslogs-stream-prefix = "ecs"
-                }
-            }
-        }])
-        runtime_platform {
-            cpu_architecture = "X86_64"
-            operating_system_family = "LINUX"
-        }
+    container_definitions = file("task-definitions/products-service.json")
+    
+    runtime_platform {
+        cpu_architecture = "X86_64"
+        operating_system_family = "LINUX"
+    }
 }
 
 resource "aws_ecs_service" "main" {
