@@ -25,6 +25,50 @@ resource "aws_ecs_task_definition" "main" {
     }
 }
 
+resource "aws_ecs_task_definition" "orders" {
+    
+    family = "orders-service"
+    network_mode             = "awsvpc"
+    requires_compatibilities = ["FARGATE"]
+    cpu                      = 256
+    memory                   = 512
+    execution_role_arn       = local.exec-role-arn
+    task_role_arn            = local.exec-role-arn
+    container_definitions = jsonencode([
+        {
+            name      = "orders"
+            image     = "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-orders-service:7142083696"
+            environment = [
+                {
+                "name" : "APP_ARGS", "value": "http://${aws_lb.main.dns_name}/payments http://${aws_lb.main.dns_name}/shipping http://${aws_lb.main.dns_name}/products"
+                }
+            ]
+            essential = true
+            portMappings = [
+                {
+                protocolo = "tcp"
+                containerPort = 8080
+                hostPort      = 8080
+                }
+            ]
+            logConfiguration = {
+                logDriver = "awslogs"
+                options   = {
+                    awslogs-create-group  = "true"
+                    awslogs-group         = "/ecs/orders-service"
+                    awslogs-region        = "us-east-1"
+                    awslogs-stream-prefix = "ecs"
+                }
+            }
+        }
+    ])
+    
+    runtime_platform {
+        cpu_architecture = "X86_64"
+        operating_system_family = "LINUX"
+    }
+}
+
 resource "aws_ecs_service" "main" {
     for_each = var.services
 
@@ -37,6 +81,8 @@ resource "aws_ecs_service" "main" {
     launch_type                        = "FARGATE"
     scheduling_strategy                = "REPLICA"
     
+    force_new_deployment = true
+
     network_configuration {
         subnets         = [aws_subnet.subnet.id, aws_subnet.subnet2.id]
         security_groups = [aws_security_group.tasks_sg.id]
@@ -46,6 +92,35 @@ resource "aws_ecs_service" "main" {
     load_balancer {
         target_group_arn = aws_alb_target_group.main.arn
         container_name   = "${each.key}"
+        container_port   = 8080
+    }
+    
+    # lifecycle {
+    #     ignore_changes = [task_definition, desired_count]
+    # }
+}
+
+resource "aws_ecs_service" "orders" {
+    name                               = "orders-service-${local.env}"
+    cluster                            = aws_ecs_cluster.main.id
+    task_definition                    = "orders-service"
+    desired_count                      = 2
+    deployment_minimum_healthy_percent = 50
+    deployment_maximum_percent         = 200
+    launch_type                        = "FARGATE"
+    scheduling_strategy                = "REPLICA"
+    
+    force_new_deployment = true
+
+    network_configuration {
+        subnets         = [aws_subnet.subnet.id, aws_subnet.subnet2.id]
+        security_groups = [aws_security_group.tasks_sg.id]
+        assign_public_ip = true
+    }
+    
+    load_balancer {
+        target_group_arn = aws_alb_target_group.main.arn
+        container_name   = "orders"
         container_port   = 8080
     }
     

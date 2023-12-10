@@ -16,11 +16,11 @@ variable "instance_type" {
     type = string
 }
 
-variable "vpc_cidr" {
-    default = "10.0.0.0/16"
-    description = "Main VPC CIDR"
-    type = string
-}
+# variable "vpc_cidr" {
+#     default = "10.0.0.0/16"
+#     description = "Main VPC CIDR"
+#     type = string
+# }
 
 variable "cloudwatch_group" {
     description = "CloudWatch group name."
@@ -38,9 +38,9 @@ variable "services" {
     description = "Nombres de servicios a desplegar"
     type        = set(string)
     default     = [
-        #"orders",
         "payments",
         "products",
         "shipping",
+        #"orders",
     ]
 }
