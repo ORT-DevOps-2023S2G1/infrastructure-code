@@ -10,7 +10,7 @@ resource "aws_ecs_cluster" "main" {
 resource "aws_ecs_task_definition" "main" {
     for_each = var.services
     
-    family = "${each.key}-td-${local.env}"
+    family = "${each.key}-service-td-${local.env}"
     network_mode             = "awsvpc"
     requires_compatibilities = ["FARGATE"]
     cpu                      = 256
@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "main" {
 
 resource "aws_ecs_task_definition" "orders" {
     
-    family = "orders-td-${local.env}"
+    family = "orders-service-td-${local.env}"
     network_mode             = "awsvpc"
     requires_compatibilities = ["FARGATE"]
     cpu                      = 256
@@ -74,7 +74,7 @@ resource "aws_ecs_service" "main" {
 
     name                               = "${each.key}-service-${local.env}"
     cluster                            = aws_ecs_cluster.main.id
-    task_definition                    = "${each.key}-td-${local.env}"
+    task_definition                    = "${each.key}-service-td-${local.env}"
     desired_count                      = 2
     deployment_minimum_healthy_percent = 50
     deployment_maximum_percent         = 200
@@ -103,7 +103,7 @@ resource "aws_ecs_service" "main" {
 resource "aws_ecs_service" "orders" {
     name                               = "orders-service-${local.env}"
     cluster                            = aws_ecs_cluster.main.id
-    task_definition                    = "orders-td-${local.env}"
+    task_definition                    = "orders-service-td-${local.env}"
     desired_count                      = 2
     deployment_minimum_healthy_percent = 50
     deployment_maximum_percent         = 200
