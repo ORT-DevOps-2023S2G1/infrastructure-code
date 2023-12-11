@@ -1,7 +1,7 @@
 locals {
     env = terraform.workspace
     name = "proy-ort"
-    exec-role-arn = "arn:aws:iam::637483454218:role/LabRole"
+    exec-role-arn = "arn:aws:iam::959060567456:role/LabRole"
 }
 
 variable "region" {
