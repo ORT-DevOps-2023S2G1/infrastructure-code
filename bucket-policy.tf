@@ -20,5 +20,9 @@ resource "aws_s3_bucket_policy" "bucket-policy" {
         }
     ]
     }
-POLICY
+    POLICY
+
+    depends_on = [
+        aws_s3_bucket.web-app-s3
+    ]
 }
