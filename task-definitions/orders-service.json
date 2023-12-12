@@ -1,0 +1,26 @@
+[
+    {
+        "name" : "orders",
+        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-orders-service:latest",
+        "environment": [
+            {"name": "APP_ARGS", "value": "http://${aws_lb.payments.dns_name}:8080 http://${aws_lb.shipping.dns_name}:8080 http://${aws_lb.products.dns_name}:8080"}
+        ],
+        "essential" : true,
+        "portMappings" : [
+            {
+                "protocol" : "tcp",
+                "containerPort" : 8080,
+                "hostPort" : 8080
+            }
+        ],
+        "logConfiguration" : {
+            "logDriver" : "awslogs",
+            "options" : {
+                "awslogs-create-group" : "true",
+                "awslogs-group" : "/ecs/product-service",
+                "awslogs-region" : "us-east-1",
+                "awslogs-stream-prefix" : "ecs"
+            }
+        }
+    }
+]

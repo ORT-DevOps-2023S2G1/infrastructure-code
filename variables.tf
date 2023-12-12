@@ -1,6 +1,7 @@
 locals {
     env = terraform.workspace
-    name = "proy-ort"
+    #changing name will affect github actions runs
+    name = "ort" 
     exec-role-arn = "arn:aws:iam::637483454218:role/LabRole"
 }
 
@@ -17,8 +18,6 @@ variable "instance_type" {
 }
 
 variable "vpc_cidr" {
-    default = "10.0.0.0/16"
-    description = "Main VPC CIDR"
     type = string
 }
 
@@ -26,4 +25,21 @@ variable "cloudwatch_group" {
     description = "CloudWatch group name."
     type = string
     default = "services-group"
+}
+
+variable "public_subnet_count" {
+    description = "Number of public subnets."
+    type        = number
+    default     = 2
+}
+
+variable "services" {
+    description = "Nombres de servicios a desplegar"
+    type        = set(string)
+    default     = [
+        "payments",
+        "products",
+        "shipping",
+        #"orders",
+    ]
 }

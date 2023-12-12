@@ -33,7 +33,7 @@ resource "aws_security_group" "tasks_sg" {
     
     ingress {
         protocol         = "tcp"
-        from_port        = 8080
+        from_port        = 0
         to_port          = 8080
         cidr_blocks      = ["0.0.0.0/0"]
         ipv6_cidr_blocks = ["::/0"]
