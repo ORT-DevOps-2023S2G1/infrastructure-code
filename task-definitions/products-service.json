@@ -1,7 +1,7 @@
 [
     {
         "name" : "products",
-        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-products-service:7142072702",
+        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-products-service:latest",
         "essential" : true,
         "portMappings" : [
             {

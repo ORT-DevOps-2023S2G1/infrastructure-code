@@ -1,7 +1,7 @@
 [
     {
         "name" : "payments",
-        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-payments-service:7142069992",
+        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-payments-service:latest",
         "essential" : true,
         "portMappings" : [
             {

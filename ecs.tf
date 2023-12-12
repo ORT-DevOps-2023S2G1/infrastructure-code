@@ -37,7 +37,7 @@ resource "aws_ecs_task_definition" "orders" {
     container_definitions = jsonencode([
         {
             name      = "orders"
-            image     = "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-orders-service:7142083696"
+            image     = "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-orders-service:latest"
             environment = [
                 {
                 "name" : "APP_ARGS", "value": "http://${aws_lb.main.dns_name}/payments http://${aws_lb.main.dns_name}/shipping http://${aws_lb.main.dns_name}/products"

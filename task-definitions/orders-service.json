@@ -1,7 +1,7 @@
 [
     {
         "name" : "orders",
-        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-orders-service:7142083696",
+        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-orders-service:latest",
         "environment": [
             {"name": "APP_ARGS", "value": "http://${aws_lb.payments.dns_name}:8080 http://${aws_lb.shipping.dns_name}:8080 http://${aws_lb.products.dns_name}:8080"}
         ],

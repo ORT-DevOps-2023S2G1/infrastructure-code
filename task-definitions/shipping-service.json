@@ -1,7 +1,7 @@
 [
     {
         "name" : "shipping",
-        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-shipping-service:7142076640",
+        "image" : "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-shipping-service:latest",
         "essential" : true,
         "portMappings" : [
             {
