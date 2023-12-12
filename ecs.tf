@@ -98,6 +98,10 @@ resource "aws_ecs_service" "main" {
     # lifecycle {
     #     ignore_changes = [task_definition, desired_count]
     # }
+
+    depends_on = [
+        aws_ecs_task_definition.main
+    ]
 }
 
 resource "aws_ecs_service" "orders" {
@@ -127,6 +131,10 @@ resource "aws_ecs_service" "orders" {
     # lifecycle {
     #     ignore_changes = [task_definition, desired_count]
     # }
+
+        depends_on = [
+            aws_ecs_task_definition.orders
+    ]
 }
 
 resource "aws_lb" "main" {
