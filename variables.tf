@@ -1,6 +1,7 @@
 locals {
     env = terraform.workspace
-    name = "ort"
+    #changing name will affect github actions runs
+    name = "ort" 
     exec-role-arn = "arn:aws:iam::637483454218:role/LabRole"
 }
 
